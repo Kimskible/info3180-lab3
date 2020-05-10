@@ -30,11 +30,10 @@ def about():
 @app.route('/contact', methods = ( 'GET','POST'))
 def contact():
     form = ContactForm()
+
     if form.validate_on_submit() and request.method =='POST':
-        msg = Message(form.subject.data,
-        sender=(form.name.data, form.email.data),
-        recipients =["@inbox.mailtrap.io"])
-        msg.body = form.textarea.data
+        msg = Message(request.form['subject'], sender=(request.form['name'], request.form['email']), recipients=['@inbox.mailtrap.io'])
+        msg.body = request.form['subject']
         mail.send(msg)
 
         flash("Email Sent!")
